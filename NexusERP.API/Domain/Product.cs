@@ -10,7 +10,7 @@ public class Product
     public Dictionary<string, string> Metadata { get; private set; } = new Dictionary<string, string>();
     public bool IsActive { get; private set; } = true;
 
-    //protected Product() { }
+    protected Product() { }
 
     public Product(Guid id, string name, decimal price, int stockQuantity)
     {

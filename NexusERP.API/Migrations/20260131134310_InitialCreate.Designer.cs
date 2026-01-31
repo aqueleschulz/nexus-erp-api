@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NexusERP.API.Data;
 
 #nullable disable
 
 namespace NexusERP.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260131125433_InitialCreate")]
+    [Migration("20260131134310_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

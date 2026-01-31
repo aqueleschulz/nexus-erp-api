@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NexusERP.API.Domain;
 
+namespace NexusERP.API.Data;
+
 public class AppDbContext : DbContext
 {
     public DbSet<Product> Products { get; set; }

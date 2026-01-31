@@ -10,8 +10,6 @@ public class Product
     public Dictionary<string, string> Metadata { get; private set; } = new Dictionary<string, string>();
     public bool IsActive { get; private set; } = true;
 
-    protected Product() { }
-
     public Product(Guid id, string name, decimal price, int stockQuantity)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -50,9 +48,8 @@ public class Product
         Price = newPrice;
     }
 
-    public void UpdateStock(int quantityChange)
+    public void UpdateStock(int newQuantity)
     {
-        int newQuantity = quantityChange;
         if (newQuantity < 0)
         {
             throw new InvalidOperationException("Stock quantity cannot be negative.");

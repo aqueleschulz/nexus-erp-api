@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NexusERP.API.Data;
 using NexusERP.API.Endpoints;
+using NexusERP.API.Domain.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source =app")
 );
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

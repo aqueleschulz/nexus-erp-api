@@ -42,12 +42,17 @@ public class AppDbContext : DbContext
                 .HasColumnName("Available");   
 
             entity.Property(e => e.Metadata)
+                .HasColumnType("TEXT")
+                .HasColumnName("Metadata")
                 .HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(v),
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(v) ?? new Dictionary<string, string>()
                 )
-                .HasColumnType("TEXT")
-                .HasColumnName("Metadata");
+                .Metadata.SetValueComparer(new Microsoft.EntityFrameworkCore.ChangeTracking.ValueComparer<Dictionary<string, string>>(
+                    (c1, c2) => System.Text.Json.JsonSerializer.Serialize(c1, (System.Text.Json.JsonSerializerOptions?)null) == System.Text.Json.JsonSerializer.Serialize(c2, (System.Text.Json.JsonSerializerOptions?)null),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(System.Text.Json.JsonSerializer.Serialize(c, (System.Text.Json.JsonSerializerOptions?)null), (System.Text.Json.JsonSerializerOptions?)null)!
+                ));
         }
         );
     }

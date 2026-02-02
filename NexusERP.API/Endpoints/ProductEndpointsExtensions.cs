@@ -32,7 +32,6 @@ public static class ProductEndpointsExtensions
 
             await repository.AddAsync(product);
 
-            //201 Created
             return Results.Created($"/products/{product.Id}", product);
         });
 

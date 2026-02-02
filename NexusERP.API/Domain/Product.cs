@@ -24,6 +24,10 @@ public class Product
         StockQuantity = stockQuantity;
     }
 
+    /// <summary>
+    /// Desativa o produto para vendas.
+    /// ATENÇÃO: Isso também define o estoque como 0 automaticamente.
+    /// </summary>
     public void Deactivate()
     {
         StockQuantity = 0;

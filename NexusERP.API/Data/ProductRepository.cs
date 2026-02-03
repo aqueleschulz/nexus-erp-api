@@ -45,15 +45,5 @@ namespace NexusERP.API.Data
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            var product = await GetByIdAsync(id);
-
-            if (product == null) throw new ArgumentException("Product not found.", nameof(id));
-            
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-        }
     }
 }

@@ -24,9 +24,9 @@ public static class ProductEndpointsExtensions
 
             if (request.Metadata != null)
             {
-                foreach (var kvp in request.Metadata)
+                foreach (var item in request.Metadata)
                 {
-                    product.Metadata[kvp.Key] = kvp.Value;
+                    product.UpdateMetadata(item.Key, item.Value);
                 }
             }
 
@@ -48,6 +48,76 @@ public static class ProductEndpointsExtensions
                     product.IsActive)
                 : null;
             return dto is not null ? Results.Ok(dto) : Results.NotFound();
+        });
+
+        group.MapDelete("/{id:guid}", async (Guid id, IProductRepository repository) =>
+        {
+            var product = await repository.GetByIdAsync(id);
+            if (product is null)
+                return Results.NotFound();
+
+            product.Deactivate();
+            await repository.UpdateAsync(product);
+
+            return Results.NoContent();
+        });
+
+        group.MapPatch("/{id:guid}/price", async (Guid id, UpdatePriceRequest request, IProductRepository repository) =>
+        {
+            var product = await repository.GetByIdAsync(id);
+            if (product is null)
+                return Results.NotFound();
+
+            try
+            {
+                product.UpdatePrice(request.NewPrice);
+                await repository.UpdateAsync(product);
+                return Results.NoContent();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        });
+
+        group.MapPatch("/{id:guid}/stock", async (Guid id, UpdateStockRequest request, IProductRepository repository) =>
+        {
+            var product = await repository.GetByIdAsync(id);
+            if (product is null)
+                return Results.NotFound();
+
+            try
+            {
+                product.UpdateStock(request.NewStockQuantity);
+                await repository.UpdateAsync(product);
+                return Results.NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        });
+
+        group.MapPut("/{id:guid}", async (Guid id, UpdateProductRequest request, IProductRepository repository) =>
+        {
+            var product = await repository.GetByIdAsync(id);
+            if (product is null)
+                return Results.NotFound();
+            
+            if (!string.IsNullOrEmpty(request.NewName))
+            {
+                product.UpdateName(request.NewName);
+            }
+
+            if (request.NewMetadata != null)
+            {
+                foreach (var item in request.NewMetadata)
+                {
+                    product.UpdateMetadata(item.Key, item.Value);
+                }
+            }
+            await repository.UpdateAsync(product);
+            return Results.NoContent();
         });
     }
 }

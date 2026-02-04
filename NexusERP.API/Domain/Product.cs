@@ -18,6 +18,9 @@ public class Product
         if (price < 0)
             throw new ArgumentOutOfRangeException(nameof(price), "Price cannot be negative.");
 
+        if (stockQuantity < 0)
+            throw new ArgumentOutOfRangeException(nameof(stockQuantity), "Stock cannot be negative.");
+        
         Id = id;
         Name = name;
         Price = price;

@@ -8,7 +8,7 @@ public class ProductTests
     public void Constructor_Should_ThrowException_When_PriceIsNegative()
     {
         var name = "Produto Teste";
-        var invalidPrice = -10.00m; // "m" indica decimal
+        var invalidPrice = -10.00m;
         var stock = 10;
 
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() => 

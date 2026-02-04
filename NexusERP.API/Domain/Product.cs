@@ -9,7 +9,6 @@ public class Product
     public int StockQuantity { get; private set; }
     public Dictionary<string, string> Metadata { get; private set; } = new Dictionary<string, string>();
     public bool IsActive { get; private set; } = true;
-
     public Product(Guid id, string name, decimal price, int stockQuantity)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -35,6 +34,11 @@ public class Product
     {
         StockQuantity = 0;
         IsActive = false;
+    }
+
+    public void Activate()
+    {
+        IsActive = true;
     }
 
     public void UpdateName(string newName)

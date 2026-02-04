@@ -62,6 +62,18 @@ public static class ProductEndpointsExtensions
             return Results.NoContent();
         });
 
+        group.MapPatch("/{id:guid}/active", async (Guid id, IProductRepository repository) =>
+        {
+            var product = await repository.GetByIdAsync(id);
+            if (product is null)
+                return Results.NotFound();
+
+            product.Activate();
+            await repository.UpdateAsync(product);
+
+            return Results.NoContent();
+        });
+
         group.MapPatch("/{id:guid}/price", async (Guid id, UpdatePriceRequest request, IProductRepository repository) =>
         {
             var product = await repository.GetByIdAsync(id);
